@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - ACA Arcium Academy</title>
+    <meta name="description" content="Join a vibrant community of Web3 learners, connect with expert mentors, and collaborate on innovative projects.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    
+    <style>
+        /* CSS Variables for Design System */
+        :root {
+            --primary-dark: #0B1426;
+            --primary-cyan: #00D4FF;
+            --primary-purple: #6366F1;
+            --neutral-gray: #64748B;
+            --success-green: #10B981;
+            --warning-amber: #F59E0B;
+            --text-light: #F8FAFC;
+            --text-muted: #94A3B8;
+            --bg-dark: #0F172A;
+            --bg-card: #1E293B;
+            --border-color: #334155;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--bg-dark) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-cyan);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-cyan);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-cyan);
+        }
+
+        /* Hero Section */
+        .community-hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background: linear-gradient(45deg, rgba(99, 102, 241, 0.1), rgba(0, 212, 255, 0.1));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Mentor Network */
+        .mentor-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .mentor-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .mentor-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mentor-card.available {
+            border-color: var(--success-green);
+        }
+
+        .mentor-card.available::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--success-green), var(--primary-cyan));
+        }
+
+        .mentor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .mentor-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .mentor-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary-cyan);
+        }
+
+        .mentor-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .mentor-expertise {
+            color: var(--primary-cyan);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .mentor-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .mentor-rating .stars {
+            color: var(--warning-amber);
+            font-size: 1.1rem;
+        }
+
+        .mentor-rating span {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .mentor-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .mentor-stat {
+            text-align: center;
+        }
+
+        .mentor-stat-number {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-cyan);
+        }
+
+        .mentor-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .mentor-status {
+            text-align: center;
+        }
+
+        .btn-connect {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--success-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-connect:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .status-unavailable {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Community Stats */
+        .stats-section {
+            padding: 4rem 2rem;
+            background: rgba(30, 41, 59, 0.3);
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .stat-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Success Stories */
+        .stories-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .story-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .story-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-cyan);
+        }
+
+        .story-author {
+            flex: 1;
+        }
+
+        .story-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .story-role {
+            color: var(--primary-cyan);
+            font-size: 0.9rem;
+        }
+
+        .story-content {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .story-achievement {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .achievement-title {
+            font-weight: 600;
+            color: var(--primary-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Forking Demo */
+        .forking-section {
+            padding: 4rem 2rem;
+            background: rgba(30, 41, 59, 0.3);
+        }
+
+        .forking-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .forking-text {
+            color: var(--text-light);
+        }
+
+        .forking-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .forking-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .forking-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .forking-features li {
+            padding: 0.5rem 0;
+            color: var(--text-light);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .forking-features li::before {
+            content: '🔀';
+            position: absolute;
+            left: 0;
+        }
+
+        .forking-visual {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fork-demo {
+            text-align: center;
+        }
+
+        .fork-original {
+            background: var(--primary-purple);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .fork-arrow {
+            font-size: 2rem;
+            color: var(--primary-cyan);
+            margin-bottom: 2rem;
+        }
+
+        .fork-projects {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .fork-project {
+            background: var(--success-green);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-cyan);
+            color: var(--primary-dark);
+        }
+
+        .btn-primary:hover {
+            background: #00B8E6;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-cyan);
+            color: var(--primary-cyan);
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-dark);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            color: var(--text-muted);
+        }
+
+        /* Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mentor-list {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .forking-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">ACA Arcium</a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="ecosystem.html" class="nav-link">Ecosystem</a></li>
+                <li><a href="learning.html" class="nav-link">Learning</a></li>
+                <li><a href="community.html" class="nav-link active">Community</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="community-hero">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Join Our Community</h1>
+            <p class="hero-subtitle">
+                Connect with expert mentors, collaborate with peers, and grow together in the Web3 ecosystem
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">50K+</span>
+                    <span class="stat-label">Active Members</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">250+</span>
+                    <span class="stat-label">Expert Mentors</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">1.2K+</span>
+                    <span class="stat-label">Success Stories</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mentor Network -->
+    <section class="mentor-section">
+        <h2 class="section-title animate-on-scroll">Expert Mentors</h2>
+        <p class="section-subtitle animate-on-scroll">
+            Connect with experienced professionals who guide your Web3 learning journey
+        </p>
+        
+        <div class="mentor-list">
+            <div class="mentor-card available animate-on-scroll">
+                <div class="mentor-info">
+                    <img src="resources/community-avatar1.jpg" alt="Alex Chen" class="mentor-avatar">
+                    <h3 class="mentor-name">Alex Chen</h3>
+                    <p class="mentor-expertise">MPC & Privacy Protocols</p>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>4.9</span>
+                    </div>
+                    <div class="mentor-stats">
+                        <div class="mentor-stat">
+                            <span class="mentor-stat-number">156</span>
+                            <span class="mentor-stat-label">Sessions</span>
+                        </div>
+                        <div class="mentor-stat">
+                            <span class="mentor-stat-number">98%</span>
+                            <span class="mentor-stat-label">Success Rate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-status">
+                    <button class="btn-connect" onclick="requestMentor('Alex Chen')">Connect Now</button>
+                </div>
+            </div>
+
+            <div class="mentor-card available animate-on-scroll">
+                <div class="mentor-info">
+                    <img src="resources/community-avatar2.jpg" alt="Sarah Rodriguez" class="mentor-avatar">
+                    <h3 class="mentor-name">Sarah Rodriguez</h3>
+                    <p class="mentor-expertise">C-SPL Development</p>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>4.8</span>
+                    </div>
+                    <div class="mentor-stats">
+                        <div class="mentor-stat">
+                            <span class="mentor-stat-number">89</span>
+                            <span class="mentor-stat-label">Sessions</span>
+                        </div>
+                        <div class="mentor-stat">
+                            <span class="mentor-stat-number">95%</span>
+                            <span class="mentor-stat-label">Success Rate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-status">
+                    <button class="btn-connect" onclick="requestMentor('Sarah Rodriguez')">Connect Now</button>
+                </div>
+            </div>
+
+            <div class="mentor-card animate-on-scroll">
+                <div class="mentor-info">
+                    <img src="resources/community-avatar3.jpg" alt="Michael Kim" class="mentor-avatar">
+                    <h3 class="mentor-name">Michael Kim</h3>
+                    <p class="mentor-expertise">Smart Contracts & DeFi</p>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★☆</span>
+                        <span>4.7</span>
+                    </div>
+                    <div class="mentor-stats">
+                        <div class="mentor-stat">
+                            <span class="mentor-stat-number">203</span>
+                            <span class="mentor-stat-label">Sessions</span>
+                        </div>
+                        <div class="mentor-stat">
+                            <span class="mentor-stat-number">92%</span>
+                            <span class="mentor-stat-label">Success Rate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-status">
+                    <span class="status-unavailable">Currently Busy</span>
+                </div>
+            </div>
+
+            <div class="mentor-card available animate-on-scroll">
+                <div class="mentor-info">
+                    <img src="resources/community-avatar1.jpg" alt="Emma Thompson" class="mentor-avatar">
+                    <h3 class="mentor-name">Emma Thompson</h3>
+                    <p class="mentor-expertise">DeFi Protocols & Security</p>
+                    <div class="mentor-rating">
+                        <span class="stars">★★★★★</span>
+                        <span>4.9</span>
+                    </div>
+                    <div class="mentor-stats">
+                        <div class="mentor-stat">
+                            <span class="mentor-stat-number">134</span>
+                            <span class="mentor-stat-label">Sessions</span>
+                        </div>
+                        <div class="mentor-stat">
+                            <span class="mentor-stat-number">96%</span>
+                            <span class="mentor-stat-label">Success Rate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mentor-status">
+                    <button class="btn-connect" onclick="requestMentor('Emma Thompson')">Connect Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Stats -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card animate-on-scroll">
+                <div class="stat-icon">🎓</div>
+                <div class="stat-value">89%</div>
+                <h3 class="stat-title">Completion Rate</h3>
+                <p class="stat-description">Students who complete their chosen learning path with mentor support</p>
+            </div>
+
+            <div class="stat-card animate-on-scroll">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-value">12min</div>
+                <h3 class="stat-title">Average Response</h3>
+                <p class="stat-description">Time it takes for mentors to respond to help requests and questions</p>
+            </div>
+
+            <div class="stat-card animate-on-scroll">
+                <div class="stat-icon">🤝</div>
+                <div class="stat-value">2.4K</div>
+                <h3 class="stat-title">Active Connections</h3>
+                <p class="stat-description">Successful mentor-mentee relationships formed in the community</p>
+            </div>
+
+            <div class="stat-card animate-on-scroll">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-value">156</div>
+                <h3 class="stat-title">Community Projects</h3>
+                <p class="stat-description">Collaborative projects initiated and completed by community members</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories -->
+    <section class="stories-section">
+        <h2 class="section-title animate-on-scroll">Success Stories</h2>
+        <p class="section-subtitle animate-on-scroll">
+            Real achievements from our community members
+        </p>
+        
+        <div class="stories-grid">
+            <div class="story-card animate-on-scroll">
+                <div class="story-header">
+                    <img src="resources/community-avatar2.jpg" alt="Maria Santos" class="story-avatar">
+                    <div class="story-author">
+                        <h4 class="story-name">Maria Santos</h4>
+                        <p class="story-role">Blockchain Developer</p>
+                    </div>
+                </div>
+                <p class="story-content">
+                    "The mentorship program transformed my understanding of Web3 privacy. Alex guided me through 
+                    complex MPC protocols, and within 3 months, I was building my own privacy-preserving applications. 
+                    The hands-on approach and real-world examples made all the difference."
+                </p>
+                <div class="story-achievement">
+                    <div class="achievement-title">Achievement: C-SPL Expert</div>
+                    <div class="achievement-description">Built a confidential voting system now used by 5+ DAOs</div>
+                </div>
+            </div>
+
+            <div class="story-card animate-on-scroll">
+                <div class="story-header">
+                    <img src="resources/community-avatar3.jpg" alt="James Wilson" class="story-avatar">
+                    <div class="story-author">
+                        <h4 class="story-name">James Wilson</h4>
+                        <p class="story-role">Security Researcher</p>
+                    </div>
+                </div>
+                <p class="story-content">
+                    "Starting with zero cryptography knowledge, the gamified learning approach kept me engaged. 
+                    The community support and mentor feedback helped me identify and fix critical vulnerabilities 
+                    in DeFi protocols. Now I'm leading security audits for major projects."
+                </p>
+                <div class="story-achievement">
+                    <div class="achievement-title">Achievement: Bug Bounty Master</div>
+                    <div class="achievement-description">Discovered 23 critical vulnerabilities, earned $150K+ in bounties</div>
+                </div>
+            </div>
+
+            <div class="story-card animate-on-scroll">
+                <div class="story-header">
+                    <img src="resources/community-avatar1.jpg" alt="Lisa Chen" class="story-avatar">
+                    <div class="story-author">
+                        <h4 class="story-name">Lisa Chen</h4>
+                        <p class="story-role">DeFi Protocol Designer</p>
+                    </div>
+                </div>
+                <p class="story-content">
+                    "The collaborative learning environment and peer reviews accelerated my growth exponentially. 
+                    Working with mentors who are active in the field provided insights that traditional education 
+                    simply couldn't match. I'm now designing protocols that handle millions in daily volume."
+                </p>
+                <div class="story-achievement">
+                    <div class="achievement-title">Achievement: Protocol Architect</div>
+                    <div class="achievement-description">Designed lending protocol with $50M+ TVL</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forking Demo -->
+    <section class="forking-section">
+        <div class="forking-content">
+            <div class="forking-text animate-on-scroll">
+                <h2 class="forking-title">Project Customization</h2>
+                <p class="forking-description">
+                    Any Web3 project can fork and customize the ACA platform while maintaining ecosystem connectivity. 
+                    Create tailored learning experiences for your specific protocol or use case.
+                </p>
+                
+                <ul class="forking-features">
+                    <li>Maintain core privacy and security features</li>
+                    <li>Customize learning paths for your protocol</li>
+                    <li>Integrate with your existing community</li>
+                    <li>Access shared mentor network and resources</li>
+                    <li>Benefit from ecosystem-wide progress tracking</li>
+                    <li>Contribute improvements back to the community</li>
+                </ul>
+                
+                <a href="#" class="btn btn-primary" onclick="alert('Forking documentation coming soon!')">Start Forking</a>
+            </div>
+            
+            <div class="forking-visual animate-on-scroll">
+                <div class="fork-demo">
+                    <div class="fork-original">ACA Arcium Academy</div>
+                    <div class="fork-arrow">↓</div>
+                    <div class="fork-projects">
+                        <div class="fork-project">Umbra Privacy</div>
+                        <div class="fork-project">Darkpool Trading</div>
+                        <div class="fork-project">MXES Computing</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section style="padding: 4rem 2rem; text-align: center; background: linear-gradient(135deg, var(--primary-purple), var(--primary-cyan));">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: white;">Ready to Join?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255, 255, 255, 0.9);">
+                Become part of a thriving ecosystem where learning meets innovation and privacy meets collaboration
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="learning.html" class="btn btn-white">Start Learning</a>
+                <a href="#" class="btn btn-secondary" onclick="alert('Community Discord invite coming soon!')">Join Discord</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 ACA Arcium Academy. Empowering Web3 education through innovation and privacy.</p>
+        </div>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script src="main.js"></script>
+    
+    <script>
+        // Community-specific functions
+        function requestMentor(mentorName) {
+            // Simulate mentor request
+            anime({
+                targets: event.target,
+                scale: [1, 0.95, 1],
+                duration: 200,
+                easing: 'easeOutCubic',
+                complete: function() {
+                    alert(`Connection request sent to ${mentorName}! They will respond within 12 minutes.`);
+                }
+            });
+        }
+
+        // Initialize community features
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add some interactive animations for mentor cards
+            const mentorCards = document.querySelectorAll('.mentor-card');
+            mentorCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('locked')) {
+                        anime({
+                            targets: this,
+                            scale: 1.02,
+                            duration: 300,
+                            easing: 'easeOutCubic'
+                        });
+                    }
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    anime({
+                        targets: this,
+                        scale: 1,
+                        duration: 300,
+                        easing: 'easeOutCubic'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

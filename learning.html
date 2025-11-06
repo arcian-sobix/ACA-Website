@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Experience - ACA Arcium Academy</title>
+    <meta name="description" content="Experience gamified Web3 learning with interactive challenges, achievement badges, and personalized learning paths.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.3.2/pixi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    
+    <style>
+        /* CSS Variables for Design System */
+        :root {
+            --primary-dark: #0B1426;
+            --primary-cyan: #00D4FF;
+            --primary-purple: #6366F1;
+            --neutral-gray: #64748B;
+            --success-green: #10B981;
+            --warning-amber: #F59E0B;
+            --text-light: #F8FAFC;
+            --text-muted: #94A3B8;
+            --bg-dark: #0F172A;
+            --bg-card: #1E293B;
+            --border-color: #334155;
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--bg-dark) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-cyan);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-cyan);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary-cyan);
+        }
+
+        /* Hero Section */
+        .learning-hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            background: url('resources/learning-paths.jpg') center/cover;
+            position: relative;
+        }
+
+        .learning-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(11, 20, 38, 0.8);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Learning Simulator */
+        .simulator-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .simulator-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .learning-nodes {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, rgba(0, 212, 255, 0.05), rgba(99, 102, 241, 0.05));
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .learning-node {
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .learning-node:hover {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .learning-node.completed {
+            border-color: var(--success-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .node-content {
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .node-content h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-light);
+        }
+
+        .node-status {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .node-details {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Badge System */
+        .badge-system {
+            padding: 4rem 2rem;
+            background: rgba(30, 41, 59, 0.3);
+        }
+
+        .badge-gallery {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .badge-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .badge-item:hover {
+            transform: translateY(-5px) rotateY(5deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary-cyan);
+        }
+
+        .badge-item.locked {
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .badge-item.locked:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--border-color);
+        }
+
+        .badge-image {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+        }
+
+        .badge-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-light);
+        }
+
+        .badge-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .badge-progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .badge-requirements {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Progress Tracking */
+        .progress-section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .progress-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .progress-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .progress-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .progress-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .progress-stats {
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .stat-value {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .stat-value.high {
+            color: var(--success-green);
+        }
+
+        .stat-value.medium {
+            color: var(--warning-amber);
+        }
+
+        .stat-value.low {
+            color: var(--primary-cyan);
+        }
+
+        /* Challenge Examples */
+        .challenges-section {
+            padding: 4rem 2rem;
+            background: rgba(30, 41, 59, 0.3);
+        }
+
+        .challenges-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .challenge-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary-cyan);
+        }
+
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .challenge-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .challenge-difficulty {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .challenge-difficulty.beginner {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success-green);
+        }
+
+        .challenge-difficulty.intermediate {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning-amber);
+        }
+
+        .challenge-difficulty.advanced {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--primary-cyan);
+        }
+
+        .challenge-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .challenge-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .challenge-reward {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-cyan);
+            font-weight: 600;
+        }
+
+        .challenge-duration {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* EC Counter */
+        .ec-counter {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .ec-amount {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-cyan);
+            display: block;
+        }
+
+        .ec-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-cyan);
+            color: var(--primary-dark);
+        }
+
+        .btn-primary:hover {
+            background: #00B8E6;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-cyan);
+            color: var(--primary-cyan);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-dark);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            color: var(--text-muted);
+        }
+
+        /* Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+
+        /* Badge Celebration */
+        .badge-celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+        }
+
+        .celebration-content {
+            text-align: center;
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 3rem;
+            border: 2px solid var(--primary-cyan);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .celebration-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-cyan);
+        }
+
+        .celebration-content img {
+            width: 120px;
+            height: 120px;
+            margin: 1rem 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .badge-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .progress-dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ec-counter {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 2rem auto;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">ACA Arcium</a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="ecosystem.html" class="nav-link">Ecosystem</a></li>
+                <li><a href="learning.html" class="nav-link active">Learning</a></li>
+                <li><a href="community.html" class="nav-link">Community</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="learning-hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Interactive Learning Experience</h1>
+            <p class="hero-subtitle">
+                Master Web3 through gamified challenges, real-time progress tracking, and hands-on cryptographic experiments
+            </p>
+        </div>
+    </section>
+
+    <!-- EC Counter -->
+    <div class="ec-counter">
+        <span class="ec-amount ec-display">0</span>
+        <span class="ec-label">EEC Credits</span>
+    </div>
+
+    <!-- Learning Simulator -->
+    <section class="simulator-section">
+        <h2 class="section-title animate-on-scroll">Learning Path Simulator</h2>
+        <p class="section-subtitle animate-on-scroll">
+            Navigate through interactive learning nodes and experience the non-linear education journey
+        </p>
+        
+        <div class="simulator-container animate-on-scroll">
+            <div class="learning-nodes">
+                <!-- Learning nodes will be dynamically generated -->
+            </div>
+            <div class="node-details">
+                <p>Select a learning node to see details and start your challenge</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Badge System -->
+    <section class="badge-system">
+        <div class="badge-gallery">
+            <h2 class="section-title animate-on-scroll">Achievement Badges</h2>
+            <p class="section-subtitle animate-on-scroll">
+                Unlock unique badges as you progress through your Web3 learning journey
+            </p>
+            
+            <div class="badge-item animate-on-scroll" data-badge="first-mint">
+                <img src="resources/badge-first-mint.png" alt="First-Mint Badge" class="badge-image">
+                <h3 class="badge-name">First-Mint</h3>
+                <p class="badge-description">Create your first C-SPL token and understand confidential transactions</p>
+                <div class="badge-progress">
+                    <div class="badge-progress-bar" style="width: 100%"></div>
+                </div>
+                <div class="badge-requirements">✓ Completed</div>
+            </div>
+
+            <div class="badge-item animate-on-scroll" data-badge="key-holder">
+                <img src="resources/badge-key-holder.png" alt="Key-Holder Badge" class="badge-image">
+                <h3 class="badge-name">Key-Holder</h3>
+                <p class="badge-description">Master cryptographic key management and Shamir's Secret Sharing</p>
+                <div class="badge-progress">
+                    <div class="badge-progress-bar" style="width: 75%"></div>
+                </div>
+                <div class="badge-requirements">3/4 requirements completed</div>
+            </div>
+
+            <div class="badge-item locked animate-on-scroll" data-badge="shard-guard">
+                <img src="resources/badge-shard-guard.png" alt="Shard-Guard Badge" class="badge-image">
+                <h3 class="badge-name">Shard-Guard</h3>
+                <p class="badge-description">Complete the sharding fundamentals and distributed systems course</p>
+                <div class="badge-progress">
+                    <div class="badge-progress-bar" style="width: 25%"></div>
+                </div>
+                <div class="badge-requirements">1/4 requirements completed</div>
+            </div>
+
+            <div class="badge-item locked animate-on-scroll" data-badge="cerberus">
+                <img src="resources/badge-cerberus.png" alt="Cerberus-Caller Badge" class="badge-image">
+                <h3 class="badge-name">Cerberus-Caller</h3>
+                <p class="badge-description">Pass the Cerberus protocol quiz with 80% or higher score</p>
+                <div class="badge-progress">
+                    <div class="badge-progress-bar" style="width: 0%"></div>
+                </div>
+                <div class="badge-requirements">Locked - Complete prerequisites</div>
+            </div>
+
+            <div class="badge-item locked animate-on-scroll" data-badge="manticore">
+                <img src="resources/badge-manticore.png" alt="Manticore-Mage Badge" class="badge-image">
+                <h3 class="badge-name">Manticore-Mage</h3>
+                <p class="badge-description">Submit a working MPC circuit for peer review and validation</p>
+                <div class="badge-progress">
+                    <div class="badge-progress-bar" style="width: 0%"></div>
+                </div>
+                <div class="badge-requirements">Locked - Advanced level required</div>
+            </div>
+
+            <div class="badge-item locked animate-on-scroll" data-badge="graduate">
+                <img src="resources/badge-graduate.png" alt="Graduate Badge" class="badge-image">
+                <h3 class="badge-name">Graduate</h3>
+                <p class="badge-description">Complete all learning paths and earn the Arcium-Adept role</p>
+                <div class="badge-progress">
+                    <div class="badge-progress-bar" style="width: 10%"></div>
+                </div>
+                <div class="badge-requirements">2/20 requirements completed</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Tracking -->
+    <section class="progress-section">
+        <h2 class="section-title animate-on-scroll">Progress Dashboard</h2>
+        <p class="section-subtitle animate-on-scroll">
+            Track your learning journey with detailed analytics and personalized insights
+        </p>
+        
+        <div class="progress-dashboard">
+            <div class="progress-card animate-on-scroll">
+                <div class="progress-header">
+                    <h3 class="progress-title">Learning Progress</h3>
+                    <div class="progress-icon">📚</div>
+                </div>
+                <div class="progress-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Completed Challenges</span>
+                        <span class="stat-value high">47</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Current Streak</span>
+                        <span class="stat-value high">12 days</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Total EEC Earned</span>
+                        <span class="stat-value high">1,240</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Rank in Community</span>
+                        <span class="stat-value medium">#127</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-card animate-on-scroll">
+                <div class="progress-header">
+                    <h3 class="progress-title">Skill Development</h3>
+                    <div class="progress-icon">🎯</div>
+                </div>
+                <div class="progress-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">MPC Protocols</span>
+                        <span class="stat-value medium">Intermediate</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">C-SPL Development</span>
+                        <span class="stat-value high">Advanced</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Privacy Computing</span>
+                        <span class="stat-value medium">Intermediate</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Smart Contracts</span>
+                        <span class="stat-value low">Beginner</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-card animate-on-scroll">
+                <div class="progress-header">
+                    <h3 class="progress-title">Community Engagement</h3>
+                    <div class="progress-icon">👥</div>
+                </div>
+                <div class="progress-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Mentorship Sessions</span>
+                        <span class="stat-value high">8</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Help Requests</span>
+                        <span class="stat-value medium">3</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Peer Reviews</span>
+                        <span class="stat-value high">12</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Community Posts</span>
+                        <span class="stat-value medium">5</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-card animate-on-scroll">
+                <div class="progress-header">
+                    <h3 class="progress-title">Learning Analytics</h3>
+                    <div class="progress-icon">📊</div>
+                </div>
+                <div class="progress-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Average Completion Time</span>
+                        <span class="stat-value medium">23 min</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Accuracy Rate</span>
+                        <span class="stat-value high">87%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Study Sessions</span>
+                        <span class="stat-value high">156</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Time Investment</span>
+                        <span class="stat-value high">42 hours</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Challenge Examples -->
+    <section class="challenges-section">
+        <h2 class="section-title animate-on-scroll">Sample Challenges</h2>
+        <p class="section-subtitle animate-on-scroll">
+            Explore the types of interactive challenges and hands-on exercises available
+        </p>
+        
+        <div class="challenges-grid">
+            <div class="challenge-card animate-on-scroll">
+                <div class="challenge-header">
+                    <h3 class="challenge-title">Create a Confidential Token</h3>
+                    <span class="challenge-difficulty beginner">Beginner</span>
+                </div>
+                <p class="challenge-description">
+                    Learn the basics of C-SPL by creating a simple confidential token on Solana. 
+                    Understand how to implement privacy-preserving transactions and secure minting processes.
+                </p>
+                <div class="challenge-meta">
+                    <div class="challenge-reward">
+                        <span>🏆</span>
+                        <span>20 EEC + First-Mint Badge</span>
+                    </div>
+                    <div class="challenge-duration">~30 minutes</div>
+                </div>
+            </div>
+
+            <div class="challenge-card animate-on-scroll">
+                <div class="challenge-header">
+                    <h3 class="challenge-title">Shamir's Secret Sharing</h3>
+                    <span class="challenge-difficulty intermediate">Intermediate</span>
+                </div>
+                <p class="challenge-description">
+                    Implement a threshold secret sharing scheme using Shamir's method. 
+                    Learn how to distribute cryptographic keys securely across multiple parties.
+                </p>
+                <div class="challenge-meta">
+                    <div class="challenge-reward">
+                        <span>🏆</span>
+                        <span>35 EEC + Key-Holder Badge</span>
+                    </div>
+                    <div class="challenge-duration">~45 minutes</div>
+                </div>
+            </div>
+
+            <div class="challenge-card animate-on-scroll">
+                <div class="challenge-header">
+                    <h3 class="challenge-title">MPC Circuit Design</h3>
+                    <span class="challenge-difficulty advanced">Advanced</span>
+                </div>
+                <p class="challenge-description">
+                    Design and implement a secure multi-party computation circuit for private data analysis. 
+                    Test your circuit with real-world scenarios and peer validation.
+                </p>
+                <div class="challenge-meta">
+                    <div class="challenge-reward">
+                        <span>🏆</span>
+                        <span>50 EEC + Manticore-Mage Badge</span>
+                    </div>
+                    <div class="challenge-duration">~90 minutes</div>
+                </div>
+            </div>
+
+            <div class="challenge-card animate-on-scroll">
+                <div class="challenge-header">
+                    <h3 class="challenge-title">Zero-Knowledge Proof</h3>
+                    <span class="challenge-difficulty advanced">Advanced</span>
+                </div>
+                <p class="challenge-description">
+                    Create a zero-knowledge proof system to verify knowledge of a secret without revealing it. 
+                    Implement both prover and verifier components.
+                </p>
+                <div class="challenge-meta">
+                    <div class="challenge-reward">
+                        <span>🏆</span>
+                        <span>45 EEC + ZK-Master Badge</span>
+                    </div>
+                    <div class="challenge-duration">~75 minutes</div>
+                </div>
+            </div>
+
+            <div class="challenge-card animate-on-scroll">
+                <div class="challenge-header">
+                    <h3 class="challenge-title">Privacy-Powered DApp</h3>
+                    <span class="challenge-difficulty intermediate">Intermediate</span>
+                </div>
+                <p class="challenge-description">
+                    Build a decentralized application with integrated privacy features using MXES. 
+                    Focus on user data protection and confidential computation.
+                </p>
+                <div class="challenge-meta">
+                    <div class="challenge-reward">
+                        <span>🏆</span>
+                        <span>40 EEC + Builder Badge</span>
+                    </div>
+                    <div class="challenge-duration">~60 minutes</div>
+                </div>
+            </div>
+
+            <div class="challenge-card animate-on-scroll">
+                <div class="challenge-header">
+                    <h3 class="challenge-title">Security Audit Simulation</h3>
+                    <span class="challenge-difficulty advanced">Advanced</span>
+                </div>
+                <p class="challenge-description">
+                    Analyze a smart contract for security vulnerabilities and propose fixes. 
+                    Learn to identify common attack vectors and implement robust security measures.
+                </p>
+                <div class="challenge-meta">
+                    <div class="challenge-reward">
+                        <span>🏆</span>
+                        <span>55 EEC + Bug-Hunter Badge</span>
+                    </div>
+                    <div class="challenge-duration">~80 minutes</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" style="padding: 4rem 2rem; text-align: center; background: linear-gradient(135deg, var(--primary-purple), var(--primary-cyan));">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: white;">Ready to Start Learning?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: rgba(255, 255, 255, 0.9);">
+                Join thousands of learners mastering Web3 through interactive challenges and hands-on experience
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#" class="btn btn-white" onclick="alert('Learning path started! Check your progress in the dashboard.');">Begin Your Journey</a>
+                <a href="community.html" class="btn btn-secondary">Find a Mentor</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 ACA Arcium Academy. Empowering Web3 education through innovation and privacy.</p>
+        </div>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>
