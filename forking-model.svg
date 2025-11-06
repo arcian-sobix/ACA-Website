@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700">
+  <defs>
+    <style>
+      .bg { fill: #1a1a2e; }
+      .core { fill: #e94560; stroke: #000; stroke-width: 3px; }
+      .fork { fill: #0f3460; stroke: #e94560; stroke-width: 2px; }
+      .text { fill: white; font-family: sans-serif; font-size: 14px; text-anchor: middle; }
+      .check { fill: #4ade80; font-size: 16px; }
+    </style>
+  </defs>
+  <rect width="1200" height="700" class="bg"/>
+  
+  <!-- Core -->
+  <rect x="300" y="50" width="600" height="100" class="core"/>
+  <text x="600" y="90" class="text" font-size="18">ARCIUM CORE (Master Template)</text>
+  <text x="600" y="110" class="text" font-size="12">Immutable: Encryption Logic, Graph Engine, Security Policies</text>
+  
+  <!-- Forks -->
+  <rect x="100" y="250" width="300" height="150" class="fork"/>
+  <text x="250" y="290" class="text" font-size="16">Umbra Fork</text>
+  <text x="250" y="310" class="text" font-size="12">Isolated: umbra_ tables</text>
+  <text x="250" y="330" class="text" font-size="12">Custom: nodes, badges, EC thresholds</text>
+  <text x="250" y="350" class="text" font-size="12">Shared: Core updates via git tags</text>
+  
+  <rect x="450" y="250" width="300" height="150" class="fork"/>
+  <text x="600" y="290" class="text" font-size="16">Darkpool Fork</text>
+  <text x="600" y="310" class="text" font-size="12">Isolated: darkpool_ tables</text>
+  <text x="600" y="330" class="text" font-size="12">Custom: Trading challenges</text>
+  <text x="600" y="350" class="text" font-size="12">Shared: Core updates via git tags</text>
+  
+  <rect x="800" y="250" width="300" height="150" class="fork"/>
+  <text x="950" y="290" class="text" font-size="16">Custom-X Fork</text>
+  <text x="950" y="310" class="text" font-size="12">Isolated: custom_x_ tables</text>
+  <text x="950" y="330" class="text" font-size="12">Custom: Project-specific content</text>
+  <text x="950" y="350" class="text" font-size="12">Shared: Core updates via git tags</text>
+  
+  <!-- Checkmarks -->
+  <text x="250" y="500" class="check">✓ Zero data leakage between forks</text>
+  <text x="600" y="500" class="check">✓ Separate encryption keys per fork</text>
+  <text x="950" y="500" class="check">✓ Independent Discord bot instances</text>
+  <text x="250" y="530" class="check">✓ Network policies block inter-fork communication</text>
+  <text x="600" y="530" class="check">✓ /fork command creates full isolation in 30 seconds</text>
+  <text x="950" y="530" class="check">✓ Upstream merges via core-vX.Y.Z git tags</text>
+</svg>
