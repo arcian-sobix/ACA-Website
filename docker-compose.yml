@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  aca-bot:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DATABASE_URL=postgresql://aca:password@postgres:5432/acabot
+      - REDIS_URL=redis://redis:6379
+      - MASTER_ENCRYPTION_KEY=${MASTER_ENCRYPTION_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: aca
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: acabot
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aca"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
