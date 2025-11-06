@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600">
+  <defs>
+    <style>
+      .bg { fill: #1a1a2e; }
+      .step { fill: #0f3460; stroke: #e94560; stroke-width: 2px; }
+      .arrow { stroke: #e94560; stroke-width: 3px; fill: none; marker-end: url(#arrowhead); }
+      .text { fill: white; font-family: sans-serif; font-size: 14px; text-anchor: middle; }
+      .title { fill: white; font-size: 24px; font-weight: 700; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#e94560" />
+    </marker>
+  </defs>
+  
+  <rect width="1000" height="600" class="bg"/>
+  <text x="500" y="50" class="title">The 90-Second Learning Loop</text>
+  
+  <!-- Steps -->
+  <circle cx="500" cy="150" r="60" class="step"/>
+  <text x="500" y="155" class="text">User Joins</text>
+  
+  <circle cx="700" cy="250" r="60" class="step"/>
+  <text x="700" y="255" class="text">/start</text>
+  
+  <circle cx="700" cy="400" r="60" class="step"/>
+  <text x="700" y="405" class="text">Path Choice</text>
+  
+  <circle cx="500" cy="500" r="60" class="step"/>
+  <text x="500" y="505" class="text">Challenge</text>
+  
+  <circle cx="300" cy="400" r="60" class="step"/>
+  <text x="300" y="405" class="text">Earn Rewards</text>
+  
+  <circle cx="300" cy="250" r="60" class="step"/>
+  <text x="300" y="255" class="text">Unlock Branches</text>
+  
+  <!-- Arrows -->
+  <path d="M 540 180 Q 650 200 660 240" class="arrow"/>
+  <path d="M 700 310 L 700 340" class="arrow"/>
+  <path d="M 660 400 Q 650 450 540 480" class="arrow"/>
+  <path d="M 460 500 Q 380 500 360 460" class="arrow"/>
+  <path d="M 300 340 L 300 310" class="arrow"/>
+  <path d="M 340 220 Q 380 200 460 180" class="arrow"/>
+  
+  <!-- Metrics -->
+  <text x="500" y="580" class="text">70% Onboarding Completion | 40% DAU/MAU | 12min Mentor Response</text>
+</svg>
