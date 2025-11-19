@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900">
+  <defs>
+    <style>
+      .bg { fill: #1a1a2e; }
+      .service { fill: #0f3460; stroke: #16213e; stroke-width: 2px; }
+      .security { fill: #ff4444; stroke: #000; stroke-width: 3px; }
+      .data { fill: #2d2d44; stroke: #333; stroke-width: 1px; }
+      .text { fill: white; font-family: sans-serif; font-size: 12px; text-anchor: middle; }
+      .security-text { fill: #ff4444; font-weight: 600; }
+    </style>
+  </defs>
+  <rect width="1400" height="900" class="bg"/>
+  
+  <!-- Layers -->
+  <text x="200" y="40" class="text" font-size="16">Discord Layer</text>
+  <text x="600" y="40" class="text" font-size="16">Application Layer (Python 3.11)</text>
+  <text x="1000" y="40" class="text" font-size="16">Data Layer (Encrypted)</text>
+  
+  <!-- Discord -->
+  <rect x="50" y="70" width="300" height="80" class="service"/>
+  <text x="200" y="115" class="text">Discord API Gateway</text>
+  
+  <!-- Core-Bot -->
+  <rect x="450" y="70" width="300" height="80" class="service"/>
+  <text x="600" y="100" class="text">Core-Bot: discord.py 2.3</text>
+  <text x="600" y="120" class="text" font-size="10">Event Routing & State Management</text>
+  
+  <!-- Evaluator -->
+  <rect x="450" y="180" width="140" height="60" class="service"/>
+  <text x="520" y="210" class="text">Evaluator</text>
+  <text x="520" y="225" class="text" font-size="10">Condition JSON Engine</text>
+  
+  <!-- Mentor -->
+  <rect x="610" y="180" width="140" height="60" class="service"/>
+  <text x="680" y="210" class="text">Mentor Matcher</text>
+  <text x="680" y="225" class="text" font-size="10">Responsiveness Scoring</text>
+  
+  <!-- PostgreSQL -->
+  <rect x="850" y="70" width="300" height="80" class="data"/>
+  <text x="1000" y="100" class="text">PostgreSQL 15</text>
+  <text x="1000" y="120" class="text" font-size="10">users, nodes, edges, encrypted_payload: BYTEA</text>
+  
+  <!-- Redis -->
+  <rect x="850" y="180" width="140" height="60" class="data"/>
+  <text x="920" y="210" class="text">Redis 7</text>
+  <text x="920" y="225" class="text" font-size="10">user:uid:guild:gid:state (TTL=24h)</text>
+  
+  <!-- Vault -->
+  <rect x="1010" y="180" width="140" height="60" class="security"/>
+  <text x="1080" y="210" class="text security-text">HashiCorp Vault</text>
+  <text x="1080" y="225" class="text" font-size="10">AES-256 Keyring</text>
+  
+  <!-- Security Services -->
+  <rect x="450" y="300" width="200" height="60" class="security"/>
+  <text x="550" y="330" class="text security-text">AES-256-GCM Encryption</text>
+  
+  <rect x="670" y="300" width="180" height="60" class="security"/>
+  <text x="760" y="330" class="text security-text">Redis-Cell Rate Limit</text>
+  
+  <rect x="450" y="380" width="200" height="60" class="security"/>
+  <text x="550" y="405" class="text security-text">Append-Only Audit Log</text>
+  <text x="550" y="425" class="text" font-size="10">SHA-256 Chain</text>
+  
+  <rect x="670" y="380" width="180" height="60" class="security"/>
+  <text x="760" y="405" class="text security-text">ClamAV Scan</text>
+  <text x="760" y="425" class="text" font-size="10">≤5MB Attachments</text>
+  
+  <!-- Analytics -->
+  <rect x="50" y="480" width="300" height="80" class="service"/>
+  <text x="200" y="510" class="text">Kafka Events</text>
+  <text x="200" y="530" class="text" font-size="10">arcium_bot_events (Avro)</text>
+  
+  <rect x="400" y="480" width="300" height="80" class="data"/>
+  <text x="550" y="510" class="text">ClickHouse</text>
+  <text x="550" y="530" class="text" font-size="10">Materialized Views</text>
+  
+  <rect x="750" y="480" width="300" height="80" class="service"/>
+  <text x="900" y="510" class="text">Grafana Alerts</text>
+  <text x="900" y="530" class="text" font-size="10">Drop-off >30% => Slack</text>
+</svg>
